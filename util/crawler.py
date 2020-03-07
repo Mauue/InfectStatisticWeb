@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import requests
 import re
 import json
@@ -16,6 +18,7 @@ _storage_name = {
     '新增治愈': 'NewCured',
     '新增死亡': 'NewDied'
 }
+
 
 def _get_data():
     resp = requests.get(_URL)
@@ -46,9 +49,12 @@ def set_chine_data(data):
     china_data = {}
     for i in data:
         china_data[_storage_name[i['name']]] = i['data'][-1]
-
+    # 计算当前确诊
+    china_data['NowConfirm'] = china_data['confirmed'] - china_data['cured'] - china_data['died']
+    # 更新日期
+    china_data['update_time'] = datetime.now().isoformat(sep=' ', timespec='seconds')
+    # TODO key有待修改
     Redis.set('china-data', json.dumps(china_data))
-
 
 
 if __name__ == "__main__":
