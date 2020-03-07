@@ -1,2 +1,3 @@
-DB_NAME = 'ISW.db'  # 数据库名字
-
+REDIS_HOST = 'localhost'
+REDIS_PORT = '6379'
+REDIS_PRIFIX = 'ISW:'

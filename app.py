@@ -1,21 +1,22 @@
 from flask import Flask
-from db import init_db_command
+from api import bp as api_bp
+import db
 
 
 def create_app():
-    app = Flask(__name__)
+    _app = Flask(__name__)
 
-    init_app(app)
+    init_app(_app)
 
-    @app.route('/')
+    @_app.route('/')
     def hello_world():
         return 'Hello World!'
 
-    return app
+    return _app
 
 
 def init_app(app):
-    app.cli.add_command(init_db_command)
+    app.register_blueprint(api_bp)
 
 
 if __name__ == '__main__':
