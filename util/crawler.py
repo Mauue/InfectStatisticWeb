@@ -5,7 +5,7 @@ import re
 import json
 import logging
 from db import Redis
-from config import CHINA_DATA_KEY, PROVINCES_DATA_KEY
+from config import Config
 
 
 _URL = "https://voice.baidu.com/act/newpneumonia/newpneumonia/?from=osari_pc_3"
@@ -45,16 +45,6 @@ def _get_data():
     return None
 
 
-def set_all_data():
-    _data = _get_data()
-    if _data and _data['component'] and _data['component'][0]:
-        data = _data['component'][0]
-        set_chine_data(data['trend']['list'])
-        set_province_data(data['caseList'])
-    else:
-        logging.warning('无法获取数据')
-
-
 def set_chine_data(data):
     if not isinstance(data, list):
         return
@@ -65,21 +55,33 @@ def set_chine_data(data):
     china_data['NowConfirm'] = china_data['confirmed'] - china_data['cured'] - china_data['died']
     # 更新日期
     china_data['update_time'] = datetime.now().isoformat(sep=' ', timespec='seconds')
-    Redis.set(CHINA_DATA_KEY, json.dumps(china_data))
+    Redis.set(Config.CHINA_DATA_KEY, json.dumps(china_data))
 
 
 def set_province_data(data):
     if not isinstance(data, list):
         return
-    Redis.clear_list(PROVINCES_DATA_KEY)
+    Redis.clear_list(Config.PROVINCES_DATA_KEY)
     for i in data:
         province_data = {'name': i['area']}
         for k in _storage_name_in_baidu:
             province_data.update({
                 _storage_name[k]: i[_storage_name_in_baidu[k]] or 0
             })
-        Redis.rpush(PROVINCES_DATA_KEY, json.dumps(province_data))
+        Redis.rpush(Config.PROVINCES_DATA_KEY, json.dumps(province_data))
+
+
+def set_all_data_task():
+    logging.warning('正在更新数据')
+    _data = _get_data()
+    if _data and _data['component'] and _data['component'][0]:
+        data = _data['component'][0]
+        set_chine_data(data['trend']['list'])
+        set_province_data(data['caseList'])
+        logging.info('数据更新完毕')
+    else:
+        logging.warning('无法获取数据')
 
 
 if __name__ == "__main__":
-    set_all_data()
+    set_all_data_task()

@@ -1,13 +1,13 @@
 import redis
-from config import REDIS_PREFIX, REDIS_PORT, REDIS_HOST
+from config import Config
 
 
 class _Redis:
     def __init__(self):
-        self.conn = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, db=1)
+        self.conn = redis.StrictRedis(host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=Config.REDIS_DB)
         self.conn.ping()
 
-        self._prefix = REDIS_PREFIX
+        self._prefix = Config.REDIS_PREFIX
 
     def get(self, name):
         return self.conn.get(self._prefix + name)
