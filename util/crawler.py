@@ -5,6 +5,8 @@ import re
 import json
 import logging
 from db import Redis
+from config import CHINA_DATA_KEY, PROVINCES_DATA_KEY
+
 
 _URL = "https://voice.baidu.com/act/newpneumonia/newpneumonia/?from=osari_pc_3"
 _storage_name = {
@@ -17,6 +19,15 @@ _storage_name = {
     '新增疑似': 'NewSuspected',
     '新增治愈': 'NewCured',
     '新增死亡': 'NewDied'
+}
+_storage_name_in_baidu = {
+    '确诊': 'confirmed',
+    '治愈': 'crued',
+    '死亡': 'died',
+    '当前确诊': 'curConfirm',
+    '新增确诊': 'curConfirmRelative',
+    '新增治愈': 'curedRelative',
+    '新增死亡': 'diedRelative'
 }
 
 
@@ -39,6 +50,7 @@ def set_all_data():
     if _data and _data['component'] and _data['component'][0]:
         data = _data['component'][0]
         set_chine_data(data['trend']['list'])
+        set_province_data(data['caseList'])
     else:
         logging.warning('无法获取数据')
 
@@ -53,8 +65,20 @@ def set_chine_data(data):
     china_data['NowConfirm'] = china_data['confirmed'] - china_data['cured'] - china_data['died']
     # 更新日期
     china_data['update_time'] = datetime.now().isoformat(sep=' ', timespec='seconds')
-    # TODO key有待修改
-    Redis.set('china-data', json.dumps(china_data))
+    Redis.set(CHINA_DATA_KEY, json.dumps(china_data))
+
+
+def set_province_data(data):
+    if not isinstance(data, list):
+        return
+    Redis.clear_list(PROVINCES_DATA_KEY)
+    for i in data:
+        province_data = {'name': i['area']}
+        for k in _storage_name_in_baidu:
+            province_data.update({
+                _storage_name[k]: i[_storage_name_in_baidu[k]] or 0
+            })
+        Redis.rpush(PROVINCES_DATA_KEY, json.dumps(province_data))
 
 
 if __name__ == "__main__":
