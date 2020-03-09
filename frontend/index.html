@@ -1,10 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8" />
+    <title>新冠肺炎实时疫情</title>
+	<link rel="stylesheet" type="text/css" href="main.css" />
 </head>
 <body>
-    <h1>Hello World</h1>
+	<div id="wrap">
+		<div id="header">
+			<h1 style="display:inline">新冠肺炎疫情情况</h1>
+			<p style="float:right">最新资讯</p>
+		</div>
+		<div id="content">
+			<div>
+				<ul class="showEsc">
+					<li class="esc">当前确诊</li>
+					<li id="ip">0</li>
+					<li id="addIp">0</li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">累计确诊</li>
+					<li id="sumIp">0</li>
+					<li id="addSumIp">0</li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">现有疑似</li>
+					<li id="sp">0</li>
+					<li id="addSp">0</li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">累计治愈</li>
+					<li id="cure">0</li>
+					<li id="addCure">0</li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">累计死亡</li>
+					<li id="dead">0</li>
+					<li id="addDead">0</li>
+				</ul>
+			</div>
+			
+			<div>
+				<iframe src="map-polygon.html" frameBorder="0" width="800" scrolling="no" height="900"></iframe>
+			</div>
+			
+			<button>全国当前确诊情况</button>
+			<button>全国累计确诊情况</button>
+			<button>全国疫情新增趋势</button>
+			<button>全国累计确诊疑似</button>
+			<button>全国累计治愈死亡</button>
+			<button>治愈与死亡率</button>
+			
+		</div>
+		<div id="footer">
+		
+		</div>
+	</div>
 </body>
 </html>
