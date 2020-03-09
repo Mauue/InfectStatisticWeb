@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>新冠肺炎实时疫情</title>
-	<link rel="stylesheet" type="text/css" href="main.css" />
+	<link rel="stylesheet" type="text/css" href="static/main.css" />
 </head>
 <body>
 	<div id="wrap">
@@ -12,8 +12,10 @@
 			<h1 style="display:inline">新冠肺炎疫情情况</h1>
 			<p style="float:right">最新资讯</p>
 		</div>
+		
 		<div id="content">
-			<div>
+		
+			<div class="escMesage">
 				<ul class="showEsc">
 					<li class="esc">当前确诊</li>
 					<li id="ip">0</li>
@@ -39,22 +41,28 @@
 					<li id="dead">0</li>
 					<li id="addDead">0</li>
 				</ul>
+				<p style="clear:both"></p>
+			</div>
+			
+			<div class="showMapButtonSet">
+				<button class="showMapButton">全国当前确诊情况
+				</button><button class="showMapButton">全国累计确诊情况</button>
 			</div>
 			
 			<div>
 				<iframe src="map-polygon.html" frameBorder="0" width="800" scrolling="no" height="900"></iframe>
 			</div>
 			
-			<button>全国当前确诊情况</button>
-			<button>全国累计确诊情况</button>
-			<button>全国疫情新增趋势</button>
-			<button>全国累计确诊疑似</button>
-			<button>全国累计治愈死亡</button>
-			<button>治愈与死亡率</button>
+			<div class="escMesage" style="width:442px">
+				<button class="trandChartButton">全国疫情新增趋势
+				</button><button class="trandChartButton">全国累计确诊疑似
+				</button><button class="trandChartButton">全国累计治愈死亡
+				</button><button class="trandChartButton">治愈与死亡率</button>
+			</div>
 			
-		</div>
-		<div id="footer">
+			<div id="trendChart">
 		
+			</div>
 		</div>
 	</div>
 </body>
