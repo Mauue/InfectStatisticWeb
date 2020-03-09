@@ -1,0 +1,110 @@
+html,body{
+    margin:0;
+    padding:0;
+}
+
+#wrap {
+    margin:0 auto;
+    width: 800px;
+	background-color:white;
+	border-style:solid;
+	border-width:1px;
+}
+
+#header{
+	background-color:white;
+	color:blue;
+}
+
+#content{
+	background-color:white;
+}
+
+#trendChart{
+	background-color:white;
+}
+
+.esc{
+	color:black;
+	display:inline;
+	font-size:15px;
+}
+
+.showEsc{
+	display:inline;
+	float:left;
+	list-style:none;
+	border-style:solid;
+	border-width:1px 0.5px;
+	margin:0;
+    padding:10px 20px;
+}
+
+.escMesage{
+	width: 540px;
+	margin:70px auto 0px;
+}
+
+.showMapButtonSet{
+	width: 540px;
+	margin:50px auto 0px;
+}
+
+.showMapButton{
+	margin:0;
+	height:40px;
+	width:250px;
+	font-size:15px;
+}
+
+.trandChartButton{
+	margin:0;
+	height:40px;
+	width:100px;
+	font-size:15px;
+}
+
+#ip{
+	color:red;
+}
+
+#addIp{
+	color:red;
+	font-size:8px;
+}
+
+#sumIp{
+	color:LightCoral;
+}
+
+#addSumIp{
+	color:LightCoral;
+	font-size:8px;
+}
+
+#sp{
+	color:LightSalmon;
+}
+
+#addSp{
+	color:LightSalmon;
+	font-size:8px;
+}
+
+#cure{
+	color:green;
+}
+
+#addCure{
+	color:green;
+	font-size:8px;
+}
+
+#dead{
+	color:black;
+}
+
+#addDead{
+	color:black;
+	font-size:8px;
+}
