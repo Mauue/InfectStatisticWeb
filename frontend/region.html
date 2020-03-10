@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>新冠肺炎实时疫情</title>
+	<link rel="stylesheet" type="text/css" href="static/region.css" />
+</head>
+<body>
+	<div id="wrap">
+		<div id="header">
+			<h1 style="display:inline;margin:5px 10px"><b>地区名</b>新冠肺炎疫情情况</h1>
+			<div id="pageJump">
+				<p style="margin:5px 10px 5px 60px">返回</p>
+			</div>
+		</div>
+		
+		<div id="content">
+			<div class="escMesage">
+				<ul class="showEsc">
+					<li class="esc">当前确诊</li>
+					<li id="ip">0</li>
+					<li id="addIp">0</li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">累计确诊</li>
+					<li id="sumIp">0</li>
+					<li id="addSumIp">0</li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">现有疑似</li>
+					<li id="sp">0</li>
+					<li id="addSp">0</li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">累计治愈</li>
+					<li id="cure">0</li>
+					<li id="addCure">0</li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">累计死亡</li>
+					<li id="dead">0</li>
+					<li id="addDead">0</li>
+				</ul>
+				<p style="clear:both"></p>
+			</div>
+		
+			<div class="escMesage" style="width:442px">
+				<button class="trandChartButton">疫情新增趋势
+				</button><button class="trandChartButton">累计确诊疑似
+				</button><button class="trandChartButton">累计治愈死亡</button>
+			</div>
+			
+			<div id="trendChart">
+		
+			</div>
+		</div>
+	</div>
+</body>
+</html>
