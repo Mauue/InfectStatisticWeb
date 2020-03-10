@@ -8,12 +8,12 @@ html,body{
     width: 800px;
 	background-color:white;
 	border-style:solid;
-	border-width:1px;
+	border-width:0px;
 }
 
 #header{
 	background-color:white;
-	color:#00CCFF;
+	color:#538AB9;
 }
 
 #content{
@@ -36,90 +36,84 @@ html,body{
 	list-style:none;
 	border-style:solid;
 	border-width:1px 0.5px;
-	margin:0;
-    padding:10px 20px;
+	margin:0 0 0 -1px;
+    padding:10px 30px;
 }
 
 .escMesage{
-	width: 540px;
+	width: 678px;
 	margin:70px auto 0px;
-}
-
-.showMapButtonSet{
-	width: 540px;
-	margin:50px auto 0px;
-}
-
-.showMapButton{
-	margin:0;
-	height:40px;
-	width:250px;
-	font-size:15px;
 }
 
 .trandChartButton{
 	margin:0;
 	height:40px;
-	width:100px;
+	width:169px;
 	font-size:15px;
+	border-width:1px;
 }
 
 #pageJump{
 	float:right;
 	color:black;
-	width:120px;
-	height:80px;
+	width:318px;
+	height:197px;
 	margin:0 0 auto auto;
 	background-image:url(./pageJumpBack.png);
 }
 
+#pageJumpFont{
+	font-size:25px;
+	display:inline;
+}
+
 #ip{
-	color:red;
+	color:#CC0E0E;
 	width:10px;
 	margin:3px auto;
 }
 
 #addIp{
-	color:red;
+	color:#CC0E0E;
 	font-size:8px;
 	width:10px;
 	margin:3px auto;
 }
 
 #sumIp{
-	color:LightCoral;
+	color:#CE7474;
 	width:10px;
 	margin:3px auto;
 }
 
 #addSumIp{
-	color:LightCoral;
+	color:#CE7474;
 	font-size:8px;
 	width:10px;
 	margin:3px auto;
 }
 
 #sp{
-	color:LightSalmon;
+	color:#C86365;
 	width:10px;
 	margin:3px auto;
 }
 
 #addSp{
-	color:LightSalmon;
+	color:#C86365;
 	font-size:8px;
 	width:10px;
 	margin:3px auto;
 }
 
 #cure{
-	color:green;
+	color:#259D85;
 	width:10px;
 	margin:3px auto;
 }
 
 #addCure{
-	color:green;
+	color:#259D85;
 	font-size:8px;
 	width:10px;
 	margin:3px auto;
@@ -136,12 +130,4 @@ html,body{
 	font-size:8px;
 	width:10px;
 	margin:3px auto;
-}
-
-#nationalwideIp{
-	
-}
-
-#nationalwideSumIp{
-	
 }
