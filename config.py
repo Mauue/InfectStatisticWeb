@@ -7,10 +7,8 @@ class Config:
 
     REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_DB)
 
-    CHINA_DATA_KEY = "china-data"
-    PROVINCES_DATA_KEY = "provinces-data"
-    TREND_DATA_KEY = 'trend-data'
     INDEX_PAGE_DATA_KEY = "index-data"
+    NEWS_DATA_KEY = "news-data"
 
     JOBS = [
         {

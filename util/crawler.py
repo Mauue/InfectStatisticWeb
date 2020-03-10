@@ -6,7 +6,7 @@ import json
 import logging
 from db import Redis
 from config import Config
-
+from urllib.parse import quote, unquote
 
 _URL = "https://voice.baidu.com/act/newpneumonia/newpneumonia/?from=osari_pc_3"
 _storage_name_chinese = {
@@ -91,17 +91,43 @@ def get_china_trend_data(data):
     return trend_data_dict
 
 
+def get_news_data(news_data, fake_news_data):
+    news_list = []
+    fake_news_list = []
+    for _news in news_data:
+        news = {
+            'title': _news['query'],
+            'url': 'https://www.baidu.com/s?wd={}'.format(_news['query'])
+        }
+        news_list.append(news)
+    for _fake_news in fake_news_data:
+        fake_news = {
+            'title': _fake_news['query'],
+            'url': 'https://www.baidu.com/s?wd={}&sa=osari_yaoyan'.format(_fake_news['query'])
+        }
+        fake_news_list.append(fake_news)
+    return {
+        'news': news_list,
+        'fake_news': fake_news_list
+    }
+
+
 def set_all_data_task():
     logging.warning('正在更新数据')
     _data = _get_data()
     if _data and _data['component'] and _data['component'][0]:
         data = _data['component'][0]
+
         index_page_data = {
             'china_data': get_china_data(data['summaryDataIn']),
             'province_data': get_province_data(data['caseList']),
             'chine_trend_data': get_china_trend_data(data['trend'])
         }
         Redis.set(Config.INDEX_PAGE_DATA_KEY, json.dumps(index_page_data))
+
+        news_data = get_news_data(data['hotwords'], data['gossips'])
+        Redis.set(Config.NEWS_DATA_KEY, json.dumps(news_data))
+
 
         logging.info('数据更新完毕')
     else:
