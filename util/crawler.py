@@ -138,7 +138,7 @@ def set_all_data_task():
         index_page_data = {
             'china_data': get_china_data(data['summaryDataIn']),
             'province_data': get_province_data(data['caseList']),
-            'chine_trend_data': get_china_trend_data(data['trend'])
+            'china_trend_data': get_china_trend_data(data['trend'])
         }
         Redis.set(Config.INDEX_PAGE_DATA_KEY, json.dumps(index_page_data))
 

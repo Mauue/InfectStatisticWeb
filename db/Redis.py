@@ -5,7 +5,7 @@ from config import Config
 class _Redis:
     def __init__(self):
         self.conn = redis.StrictRedis(host=Config.REDIS_HOST, port=Config.REDIS_PORT,
-                                      db=Config.REDIS_DB)
+                                      password=Config.REDIS_PASSWORD, db=Config.REDIS_DB)
         self.conn.ping()
 
         self._prefix = Config.REDIS_PREFIX
