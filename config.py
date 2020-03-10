@@ -9,6 +9,8 @@ class Config:
 
     CHINA_DATA_KEY = "china-data"
     PROVINCES_DATA_KEY = "provinces-data"
+    TREND_DATA_KEY = 'trend-data'
+    INDEX_PAGE_DATA_KEY = "index-data"
 
     JOBS = [
         {

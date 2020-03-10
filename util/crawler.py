@@ -9,27 +9,31 @@ from config import Config
 
 
 _URL = "https://voice.baidu.com/act/newpneumonia/newpneumonia/?from=osari_pc_3"
-_storage_name = {
+_storage_name_chinese = {
     '确诊': 'confirmed',
-    '疑似': 'suspected',
+    '疑似': 'unconfirmed',
     '治愈': 'cured',
     '死亡': 'died',
     '当前确诊': 'NowConfirm',
-    '新增确诊': 'NewConfirm',
-    '新增疑似': 'NewSuspected',
+    '新增当前确诊': 'NewConfirm',
+    '新增确诊': 'NewNowConfirmed',
+    '新增疑似': 'NewUnconfirmed',
     '新增治愈': 'NewCured',
     '新增死亡': 'NewDied'
 }
+# 只需要用得到的数据
 _storage_name_in_baidu = {
-    '确诊': 'confirmed',
-    '治愈': 'crued',
-    '死亡': 'died',
-    '当前确诊': 'curConfirm',
-    '新增确诊': 'curConfirmRelative',
-    '新增治愈': 'curedRelative',
-    '新增死亡': 'diedRelative'
+    'confirmed': 'confirmed',
+    'died': 'died',
+    'cured': 'cured',
+    'unConfirmed': 'unconfirmed',
+    'confirmedRelative': 'NewConfirmed',
+    'unconfirmedRelative': 'NewUnconfirmed',
+    'curedRelative': 'NewCured',
+    'diedRelative': 'NewDied',
+    'curConfirm': 'NowConfirm',
+    'curConfirmRelative': 'NewNowConfirm'
 }
-
 
 def _get_data():
     resp = requests.get(_URL)
@@ -45,30 +49,46 @@ def _get_data():
     return None
 
 
-def set_chine_data(data):
-    if not isinstance(data, list):
-        return
+def get_china_data(data):
     china_data = {}
-    for i in data:
-        china_data[_storage_name[i['name']]] = i['data'][-1]
-    # 计算当前确诊
-    china_data['NowConfirm'] = china_data['confirmed'] - china_data['cured'] - china_data['died']
-    # 更新日期
-    china_data['update_time'] = datetime.now().isoformat(sep=' ', timespec='seconds')
-    Redis.set(Config.CHINA_DATA_KEY, json.dumps(china_data))
+    for key in data:
+        if key in _storage_name_in_baidu:
+            china_data.update({
+                _storage_name_in_baidu[key]: data[key]
+            })
+    return china_data
 
 
-def set_province_data(data):
-    if not isinstance(data, list):
-        return
-    Redis.clear_list(Config.PROVINCES_DATA_KEY)
+def get_province_data(data):
+    _data = []
     for i in data:
         province_data = {'name': i['area']}
-        for k in _storage_name_in_baidu:
+        for key in _storage_name_in_baidu:
+
+            k = key if key != 'cured' else 'crued'
+            if k not in i:
+                continue
+
             province_data.update({
-                _storage_name[k]: i[_storage_name_in_baidu[k]] or 0
+                _storage_name_in_baidu[key]: i[k] or 0
             })
-        Redis.rpush(Config.PROVINCES_DATA_KEY, json.dumps(province_data))
+        _data.append(province_data)
+    return _data
+
+
+def get_china_trend_data(data):
+    trend_data_dict = {
+        'date': data['updateDate'],
+        'data': None
+    }
+    trend_data_list = []
+    for i in data['list']:
+        trend_data_list.append({
+            'name': _storage_name_chinese[i['name']],
+            'data': i['data']
+        })
+    trend_data_dict['data'] = trend_data_list
+    return trend_data_dict
 
 
 def set_all_data_task():
@@ -76,8 +96,13 @@ def set_all_data_task():
     _data = _get_data()
     if _data and _data['component'] and _data['component'][0]:
         data = _data['component'][0]
-        set_chine_data(data['trend']['list'])
-        set_province_data(data['caseList'])
+        index_page_data = {
+            'china_data': get_china_data(data['summaryDataIn']),
+            'province_data': get_province_data(data['caseList']),
+            'chine_trend_data': get_china_trend_data(data['trend'])
+        }
+        Redis.set(Config.INDEX_PAGE_DATA_KEY, json.dumps(index_page_data))
+
         logging.info('数据更新完毕')
     else:
         logging.warning('无法获取数据')

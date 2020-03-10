@@ -20,7 +20,6 @@ def create_app():
 
     set_all_data_task()  # 运行前先获取一次数据
 
-
     return _app
 
 
