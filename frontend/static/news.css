@@ -1,0 +1,38 @@
+html,body{
+    margin:0;
+    padding:0;
+}
+
+#wrap {
+    margin:0 auto;
+    width: 800px;
+	background-color:white;
+	border-style:solid;
+	border-width:1px;
+}
+
+#header{
+	background-color:white;
+	color:#00CCFF;
+}
+
+#content{
+	background-color:white;
+}
+
+#pageJump{
+	float:right;
+	color:black;
+	width:120px;
+	height:80px;
+	margin:0 0 auto auto;
+	background-image:url(./pageJumpBack.png);
+}
+
+#publicHotSearch{
+	
+}
+
+#ShatterRumors{
+	
+}
