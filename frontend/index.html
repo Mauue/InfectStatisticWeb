@@ -5,16 +5,19 @@
     <meta charset="utf-8" />
     <title>新冠肺炎实时疫情</title>
 	<link rel="stylesheet" type="text/css" href="static/main.css" />
+	<link rel="stylesheet" type="text/css" href="static/index.css" />
+	<script src="echarts.min.js"></script>
 </head>
 <body>
-	<div id="wrap">
-		<div id="header">
+	<div id="header">
 			<h1 style="display:inline;margin:5px 10px">新冠肺炎疫情情况</h1>
 			<div id="pageJump">
-				<p style="margin:5px 10px 5px 40px">最新资讯</p>
+				<p id="pageJumpFont" style="margin:36px 10px 5px 159px">最新资讯</p>
+				<img src="static/moveIcon.png"  style="margin:20px 0px -13px 0px"/>
 			</div>
-		</div>
-		
+	</div>
+	
+	<div id="wrap">
 		<div id="content">
 		
 			<div class="escMesage">
@@ -55,15 +58,14 @@
 				<iframe src="map-polygon.html" frameBorder="0" width="800" scrolling="no" height="900"></iframe>
 			</div>
 			
-			<div class="escMesage" style="width:442px">
+			<div class="escMesage" style="width:775px">
 				<button class="trandChartButton">全国疫情新增趋势
 				</button><button class="trandChartButton">全国累计确诊疑似
 				</button><button class="trandChartButton">全国累计治愈死亡
 				</button><button class="trandChartButton">治愈与死亡率</button>
 			</div>
 			
-			<div id="trendChart">
-		
+			<div id="trendChart" style="width:775;height:775">
 			</div>
 		</div>
 	</div>
