@@ -1,0 +1,133 @@
+html,body{
+    margin:0;
+    padding:0;
+}
+
+#wrap {
+    margin:0 auto;
+    width: 800px;
+	background-color:white;
+	border-style:solid;
+	border-width:0px;
+}
+
+#header{
+	background-color:white;
+	color:#538AB9;
+}
+
+#content{
+	background-color:white;
+}
+
+#trendChart{
+	background-color:white;
+}
+
+.esc{
+	color:black;
+	display:inline;
+	font-size:15px;
+}
+
+.showEsc{
+	display:inline;
+	float:left;
+	list-style:none;
+	border-style:solid;
+	border-width:1px 0.5px;
+	margin:0 0 0 -1px;
+    padding:10px 30px;
+}
+
+.escMesage{
+	width: 678px;
+	margin:70px auto 0px;
+}
+
+.trandChartButton{
+	margin:0;
+	height:40px;
+	width:169px;
+	font-size:15px;
+	border-width:1px;
+}
+
+#pageJump{
+	float:right;
+	color:black;
+	width:318px;
+	height:197px;
+	margin:0 0 auto auto;
+	background-image:url(../img/pageJumpBack.png);
+}
+
+#pageJumpFont{
+	font-size:25px;
+	display:inline;
+}
+
+#ip{
+	color:#CC0E0E;
+	width:10px;
+	margin:3px auto;
+}
+
+#addIp{
+	color:#CC0E0E;
+	font-size:8px;
+	width:10px;
+	margin:3px auto;
+}
+
+#sumIp{
+	color:#CE7474;
+	width:10px;
+	margin:3px auto;
+}
+
+#addSumIp{
+	color:#CE7474;
+	font-size:8px;
+	width:10px;
+	margin:3px auto;
+}
+
+#sp{
+	color:#C86365;
+	width:10px;
+	margin:3px auto;
+}
+
+#addSp{
+	color:#C86365;
+	font-size:8px;
+	width:10px;
+	margin:3px auto;
+}
+
+#cure{
+	color:#259D85;
+	width:10px;
+	margin:3px auto;
+}
+
+#addCure{
+	color:#259D85;
+	font-size:8px;
+	width:10px;
+	margin:3px auto;
+}
+
+#dead{
+	color:black;
+	width:10px;
+	margin:3px auto;
+}
+
+#addDead{
+	color:black;
+	font-size:8px;
+	width:10px;
+	margin:3px auto;
+}
