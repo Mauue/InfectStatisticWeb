@@ -1,4 +1,6 @@
-from flask import Flask, current_app
+import json
+
+from flask import Flask, request
 from flask_apscheduler import APScheduler
 from config import Config
 from util.crawler import set_all_data_task
@@ -19,13 +21,19 @@ def create_app():
 
     set_all_data_task()  # 运行前先获取一次数据
 
-    @_app.route('/index')
+    @_app.route('/api/index')
     def get_index():
         return Redis.get(Config.INDEX_PAGE_DATA_KEY)
 
-    @_app.route('/news')
+    @_app.route('/api/news')
     def get_news():
         return Redis.get(Config.NEWS_DATA_KEY)
+
+    @_app.route('/api/province')
+    def get_province():
+        province = request.args.get('name')
+        data = Redis.get(province) if province else ''
+        return data if data else ''
 
     return _app
 

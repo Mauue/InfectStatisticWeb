@@ -8,7 +8,8 @@ from db import Redis
 from config import Config
 from urllib.parse import quote, unquote
 
-_URL = "https://voice.baidu.com/act/newpneumonia/newpneumonia/?from=osari_pc_3"
+_URL = "https://voice.baidu.com/act/newpneumonia/newpneumonia/?from=osari_pc_3&city=福建-福建"
+_URL_PROVINCE = "https://voice.baidu.com/act/newpneumonia/newpneumonia/?from=osari_pc_3&city={0}-{0}"
 _storage_name_chinese = {
     '确诊': 'confirmed',
     '疑似': 'unconfirmed',
@@ -34,6 +35,7 @@ _storage_name_in_baidu = {
     'curConfirm': 'NowConfirm',
     'curConfirmRelative': 'NewNowConfirm'
 }
+
 
 def _get_data():
     resp = requests.get(_URL)
@@ -112,12 +114,27 @@ def get_news_data(news_data, fake_news_data):
     }
 
 
+def get_province_trend_data(data):
+    province_trend_data = []
+    for _province_data in data:
+        data_list = _province_data['trend']['list']
+        for i in data_list:
+            i['name'] = _storage_name_chinese[i['name']]
+
+        province_data = {
+            'name': _province_data['name'],
+            'date': _province_data['trend']['updateDate'],
+            'data': data_list
+        }
+        province_trend_data.append(province_data)
+    return province_trend_data
+
+
 def set_all_data_task():
     logging.warning('正在更新数据')
     _data = _get_data()
     if _data and _data['component'] and _data['component'][0]:
         data = _data['component'][0]
-
         index_page_data = {
             'china_data': get_china_data(data['summaryDataIn']),
             'province_data': get_province_data(data['caseList']),
@@ -128,6 +145,9 @@ def set_all_data_task():
         news_data = get_news_data(data['hotwords'], data['gossips'])
         Redis.set(Config.NEWS_DATA_KEY, json.dumps(news_data))
 
+        province_trend_data = get_province_trend_data(data['provinceTrendList'])
+        for province in province_trend_data:
+            Redis.set(province['name'], json.dumps(province))
 
         logging.info('数据更新完毕')
     else:
