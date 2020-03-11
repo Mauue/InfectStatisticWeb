@@ -5,13 +5,13 @@
 
 ## 运行方式
 运行环境
-- Python3 (测试环境为Python3.7)
+- Python3.7及以上 (测试环境为Python3.7)
 - Redis
 
 运行方式
 1. 安装依赖库
     ```
-    pip install -r requirement.txt
+    pip install -r requirements.txt
     ```
 2. 运行Redis服务端 并在config.py中配置Redis路径
     ```Python3
