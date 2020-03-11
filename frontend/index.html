@@ -6,14 +6,17 @@
     <title>新冠肺炎实时疫情</title>
 	<link rel="stylesheet" type="text/css" href="static/css/main.css" />
 	<link rel="stylesheet" type="text/css" href="static/css/index.css" />
-	<script src="echarts.min.js"></script>
+	<script src="static/js/index.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 </head>
 <body>
 	<div id="header">
 			<h1 style="display:inline;margin:5px 10px">新冠肺炎疫情情况</h1>
+			<input type="date" id="nowDateTime"/>
 			<div id="pageJump">
+				<a href="news.html" />
 				<p id="pageJumpFont" style="margin:36px 10px 5px 159px">最新资讯</p>
-				<img src="static/img/moveIcon.png" style="margin:20px 0px -13px 0px"/>
+				<img src="static/img/moveIcon.png"  style="margin:20px 0px -13px 0px"/>
 			</div>
 	</div>
 	
@@ -59,15 +62,48 @@
 			</div>
 			
 			<div class="escMesage" style="width:775px">
-				<button class="trandChartButton">全国疫情新增趋势
+				<button class="trandChartButton" style="background-color:red">全国疫情新增趋势
 				</button><button class="trandChartButton">全国累计确诊疑似
 				</button><button class="trandChartButton">全国累计治愈死亡
 				</button><button class="trandChartButton">治愈与死亡率</button>
 			</div>
 			
-			<div id="trendChart" style="width:775;height:775">
+			<div id="trendChart" style="width:775px;height:700px">
 			</div>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('trendChart'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {},
+            tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'cross'
+				}
+			},
+            legend: {},
+            xAxis: {
+                data: ["1-26","1-27","1-28","1-29","1-30","1-31","2-1","2-2","2-3","2-4","2-5","2-6","2-7","2-8","2-9"]
+            },
+            yAxis: [{
+				type: 'value',
+				name:'单位：例',
+			}],
+            series: [{
+				name: '新增确诊',
+                type: 'line',
+				smooth: 'true',
+                data: [5, 20, 36, 10, 10, 20, 20, 36, 10, 10, 20, 20, 36, 10, 10]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
 </body>
 </html>
