@@ -31,6 +31,10 @@
 
 ## 接口文档
 
-[在这](doc/api/index.md)
+[GET: ``/api/index``](doc/api/index.md)
+
+[GET: ``/api/news``](doc/api/news.md)
+
+[GET: ``/api/province?name=<省份>``](doc/api/province.md)
 
 ## 程序结构
