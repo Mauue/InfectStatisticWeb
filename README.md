@@ -21,7 +21,17 @@
     ```
 3. 配置Nginx
     ```
-    ...
+    server {
+        listen 80;
+        root <InfectStatisticWeb\frontend的目录路径>;
+        index index.html
+        server_name  localhost;
+        
+        location /api/ {
+                rewrite ^(/api/.*) /$1 break;   #两个反斜杆
+                proxy_pass http://localhost:<服务端的端口号>;
+        }  
+    }
     ```
 
 4. 运行
@@ -31,10 +41,10 @@
 
 ## 接口文档
 
-[GET: ``/api/index``](doc/api/index.md)
+[GET: `/api/index`](doc/api/index.md)
 
-[GET: ``/api/news``](doc/api/news.md)
+[GET: `/api/news`](doc/api/news.md)
 
-[GET: ``/api/province?name=<省份>``](doc/api/province.md)
+[GET: `/api/province?name=<省份>`](doc/api/province.md)
 
 ## 程序结构

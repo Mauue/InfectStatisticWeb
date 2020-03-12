@@ -6,7 +6,8 @@
     <title>新冠肺炎实时疫情</title>
 	<link rel="stylesheet" type="text/css" href="static/css/main.css" />
 	<link rel="stylesheet" type="text/css" href="static/css/index.css" />
-	<script src="static/js/index.js"></script>
+	<script type="text/javascript" src="static/js/index.js"></script>
+	<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 </head>
 <body>
@@ -76,8 +77,48 @@
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('trendChart'));
 
+
+        function update_china_data(data) {
+			$('#ip').text(data.nowConfirm)
+			$('#addIp').text(data.newNowConfirm)
+			$('#sumIp').text(data.confirmed)
+			$('#addSumIp').text(data.newConfirmed);
+			$('#sp').text(data.unconfirmed);
+			$('#addSp').text(data.newUnconfirmed);
+			$('#cure').text(data.cured);
+			$('#addCure').text(data.newCured);
+			$('#dead').text(data.died);
+			$('#addDead').text(data.newDied);
+		}
+		
+		function update_china_map(data) {
+
+		}
+		
+		function update_china_trend(data) {
+
+		}
+
+		function update_all_data(){
+			$.get('/api/index', function (data, status) {
+				if (status !== 'success'){
+					alert('获取数据失败')
+				} else {
+					data = JSON.parse(data)
+					update_china_data(data.china_data)
+					update_china_map(data.province_data)
+					update_china_trend(data.china_trend_data)
+				}
+			})
+		}
+
+
+		$(document).ready(function(){
+			update_all_data();
+		})
+
         // 指定图表的配置项和数据
-        var option = {
+        let option = {
             title: {},
             tooltip: {
 				trigger: 'axis',

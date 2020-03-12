@@ -15,25 +15,25 @@ _storage_name_chinese = {
     '疑似': 'unconfirmed',
     '治愈': 'cured',
     '死亡': 'died',
-    '当前确诊': 'NowConfirm',
-    '新增当前确诊': 'NewConfirm',
-    '新增确诊': 'NewNowConfirmed',
-    '新增疑似': 'NewUnconfirmed',
-    '新增治愈': 'NewCured',
-    '新增死亡': 'NewDied'
+    '当前确诊': 'nowConfirm',
+    '新增当前确诊': 'newConfirm',
+    '新增确诊': 'newNowConfirmed',
+    '新增疑似': 'newUnconfirmed',
+    '新增治愈': 'newCured',
+    '新增死亡': 'newDied'
 }
 # 只需要用得到的数据
 _storage_name_in_baidu = {
     'confirmed': 'confirmed',
     'died': 'died',
     'cured': 'cured',
-    'unConfirmed': 'unconfirmed',
-    'confirmedRelative': 'NewConfirmed',
-    'unconfirmedRelative': 'NewUnconfirmed',
-    'curedRelative': 'NewCured',
-    'diedRelative': 'NewDied',
-    'curConfirm': 'NowConfirm',
-    'curConfirmRelative': 'NewNowConfirm'
+    'unconfirmed': 'unconfirmed',
+    'confirmedRelative': 'newConfirmed',
+    'unconfirmedRelative': 'newUnconfirmed',
+    'curedRelative': 'newCured',
+    'diedRelative': 'newDied',
+    'curConfirm': 'nowConfirm',
+    'curConfirmRelative': 'newNowConfirm'
 }
 
 
