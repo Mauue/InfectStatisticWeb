@@ -1,7 +1,56 @@
 #publicHotSearch{
-	
+	height:400px;
+	width:800px;
+	background-color:#DFDDDD;
+	margin:50px auto;
+	padding-left:20px;
+	padding-right:20px;
 }
 
 #ShatterRumors{
-	
+	height:330px;
+	width:800px;
+	background-color:#DFDDDD;
+	margin:50px auto;
+	padding-left:20px;
+	padding-right:20px;
+}
+
+.newsTitle{
+	width:200px;
+	margin:15px auto;
+}
+
+.newsTitleM{
+	width:150px;
+	font-size:29px;
+	display:inline;
+}
+
+.no1{
+	color:#DF3F3F;
+}
+
+.no2{
+	color:#5B65DB;
+}
+
+.no3{
+	color:#259D55;
+}
+
+.no4To10{
+	color:black;
+}
+
+div > h4{
+	display:inline;
+	font-size:20px;
+	margin:25px 5px 0px 5px;
+}
+
+.lines{
+	border-top:1px #BFBFBF dashed;
+	width:750px;
+	margin:5px 25px 8px 25px;
 }
