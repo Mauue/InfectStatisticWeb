@@ -2,10 +2,17 @@
 
 ## 项目介绍
 
+|这个作业属于哪个课程|[班级链接](https://edu.cnblogs.com/campus/fzu/2020SpringW)|
+|:--- |:---:|
+|这个作业要求在哪里|[作业链接](https://edu.cnblogs.com/campus/fzu/2020SpringW/homework/10456)|
+|结对学号   |	221701133 021700511|
+|这个作业的目标|某次疫情统计可视化的实现|
+|作业正文|....  |
+|其他参考文献|... |
 
 ## 运行方式
 运行环境
-- Python3.7及以上 (测试环境为Python3.7)
+- Python3.7或3.7以上版本 (测试环境为Python3.7)
 - Redis
 
 运行方式
@@ -19,7 +26,9 @@
     REDIS_PORT = '6379'
     REDIS_DB = 0
     ```
-3. 配置Nginx
+3. 使用Nginx部署
+
+    Nginx配置信息
     ```
     server {
         listen 80;
@@ -28,7 +37,7 @@
         server_name  localhost;
         
         location /api/ {
-                rewrite ^(/api/.*) /$1 break;   #两个反斜杆
+                rewrite ^(/api/.*) /$1 break; 
                 proxy_pass http://localhost:<服务端的端口号>;
         }  
     }
@@ -36,15 +45,13 @@
 
 4. 运行
     ```
-    flask run
+    flask run -p 端口号 
     ```
 
 ## 接口文档
 
-[GET: `/api/index`](doc/api/index.md)
+获取主页数据: `/api/index` [接口文档](doc/api/index.md)
 
-[GET: `/api/news`](doc/api/news.md)
+获取新闻数据：`/api/news` [接口文档](doc/api/news.md)
 
-[GET: `/api/province?name=<省份>`](doc/api/province.md)
-
-## 程序结构
+获取省份数据：`/api/province?name=<省份>`[接口文档](doc/api/province.md)

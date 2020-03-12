@@ -4,6 +4,7 @@ from flask import Flask, request
 from flask_apscheduler import APScheduler
 from config import Config
 from util.crawler import set_all_data_task
+from util.schedule import ScheduleConfig
 from db import Redis
 import logging
 
@@ -13,6 +14,7 @@ scheduler = APScheduler()
 def create_app():
     _app = Flask(__name__)
     _app.config.from_object(Config)
+    _app.config.from_object(ScheduleConfig)
 
     init_app(_app)
 
