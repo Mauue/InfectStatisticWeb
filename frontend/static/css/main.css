@@ -42,7 +42,7 @@ html,body{
 
 .escMesage{
 	width: 678px;
-	margin:70px auto 0px;
+	margin:200px auto 0px;
 }
 
 .trandChartButton{
@@ -69,65 +69,65 @@ html,body{
 
 #ip{
 	color:#CC0E0E;
-	width:10px;
 	margin:3px auto;
+	text-align:center;
 }
 
 #addIp{
 	color:#CC0E0E;
 	font-size:8px;
-	width:10px;
 	margin:3px auto;
+	text-align:center;
 }
 
 #sumIp{
 	color:#CE7474;
-	width:10px;
 	margin:3px auto;
+	text-align:center;
 }
 
 #addSumIp{
 	color:#CE7474;
 	font-size:8px;
-	width:10px;
 	margin:3px auto;
+	text-align:center;
 }
 
 #sp{
 	color:#C86365;
-	width:10px;
 	margin:3px auto;
+	text-align:center;
 }
 
 #addSp{
 	color:#C86365;
 	font-size:8px;
-	width:10px;
 	margin:3px auto;
+	text-align:center;
 }
 
 #cure{
 	color:#259D85;
-	width:10px;
 	margin:3px auto;
+	text-align:center;
 }
 
 #addCure{
 	color:#259D85;
 	font-size:8px;
-	width:10px;
 	margin:3px auto;
+	text-align:center;
 }
 
 #dead{
 	color:black;
-	width:10px;
 	margin:3px auto;
+	text-align:center;
 }
 
 #addDead{
 	color:black;
 	font-size:8px;
-	width:10px;
 	margin:3px auto;
+	text-align:center;
 }
