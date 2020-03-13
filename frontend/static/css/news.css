@@ -2,16 +2,18 @@
 	height:400px;
 	width:800px;
 	background-color:#DFDDDD;
-	margin:200px auto 50px;
+	margin:100px auto 50px;
 	padding-left:20px;
 	padding-right:20px;
+	border-width:2px;
+	border-color:#BBBBBB;
 }
 
 #ShatterRumors{
-	height:330px;
+	height:480px;
 	width:800px;
 	background-color:#DFDDDD;
-	margin:50px auto;
+	margin:70px auto;
 	padding-left:20px;
 	padding-right:20px;
 }
@@ -43,7 +45,7 @@
 	color:black;
 }
 
-div > h4,a{
+div > h4,h4+a{
 	display:inline;
 	font-size:20px;
 	color:black;
