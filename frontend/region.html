@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8" />
     <title>新冠肺炎实时疫情</title>
-	<link rel="stylesheet" type="text/css" href="static/css/region.css" />
 	<link rel="stylesheet" type="text/css" href="static/css/main.css" />
 	<script src="static/js/region.js"></script>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
@@ -25,36 +24,36 @@
 			<div class="escMesage">
 				<ul class="showEsc">
 					<li class="esc">当前确诊</li>
-					<li id="ip">0</li>
-					<li id="addIp">0</li>
+					<li id="ip">12131</li>
+					<li class="showDateIp">昨日<b id="addIp">2000</b></li>
 				</ul>
 				<ul class="showEsc">
 					<li class="esc">累计确诊</li>
-					<li id="sumIp">0</li>
-					<li id="addSumIp">0</li>
+					<li id="sumIp">01212</li>
+					<li class="showDateSumIp">昨日<b id="addSumIp">012</b></li>
 				</ul>
 				<ul class="showEsc">
 					<li class="esc">现有疑似</li>
 					<li id="sp">0</li>
-					<li id="addSp">0</li>
+					<li class="showDateSp">昨日<b id="addSp">0</b></li>
 				</ul>
 				<ul class="showEsc">
 					<li class="esc">累计治愈</li>
 					<li id="cure">0</li>
-					<li id="addCure">0</li>
+					<li class="showDateCure">昨日<b id="addCure">0</b></li>
 				</ul>
 				<ul class="showEsc">
 					<li class="esc">累计死亡</li>
 					<li id="dead">0</li>
-					<li id="addDead">0</li>
+					<li class="showDateDead">昨日<b id="addDead">0</b></li>
 				</ul>
 				<p style="clear:both"></p>
 			</div>
 		
-			<div class="escMesage" style="width:680px">
-				<button class="trandChartButton" style="width:200px;background-color:red">疫情新增趋势
-				</button><button class="trandChartButton" style="width:200px">累计确诊疑似
-				</button><button class="trandChartButton" style="width:200px">累计治愈死亡</button>
+			<div class="escMesage" style="width:789px">
+				<button class="trandChartButton" style="background-color:red;width:258px;">疫情新增趋势
+				</button><button class="trandChartButton" style="width:258px;">累计确诊疑似
+				</button><button class="trandChartButton" style="width:258px;">累计治愈死亡</button>
 			</div>
 			
 			<div id="trendChart" style="width:775px;height:700px">
