@@ -1,0 +1,147 @@
+html,body{
+    margin:0;
+    padding:0;
+}
+
+#wrap {
+    margin:0 auto;
+    width: 900px;
+	background-color:white;
+	border-style:solid;
+	border-width:0px;
+}
+
+#header{
+	background-color:white;
+	color:#538AB9;
+	margin-bottom:70px;
+}
+
+#content{
+	/*background-image:url(../img/backImage.png);*/
+	padding-top:30px;
+	padding-bottom:20px;
+}
+
+#trendChart{
+	margin-top:20px;
+	margin-left:56px;
+	background-color:white;
+}
+
+.esc{
+	color:black;
+	display:inline;
+	font-size:15px;
+}
+
+.showEsc{
+	display:inline;
+	float:left;
+	list-style:none;
+	border-style:solid;
+	border-width:1px 0.5px;
+	margin:0 0 0 -1px;
+    padding:10px 30px;
+}
+
+.escMesage{
+	width: 614px;
+	margin:100px auto 0px;
+}
+
+.trandChartButton{
+	margin:0;
+	margin-left:-1px;
+	height:40px;
+	width:194px;
+	font-size:15px;
+	border-width:1px;
+	border-color:#BBBBBB;
+	background-color:white;
+}
+
+#pageJump{
+	float:right;
+	color:black;
+	width:318px;
+	height:197px;
+	margin:0 0 auto auto;
+	background-image:url(../img/pageJumpBack.png);
+}
+
+#pageJumpFont{
+	font-size:25px;
+	display:inline;
+}
+
+#ip{
+	color:#CC0E0E;
+	margin:3px auto;
+	text-align:center;
+}
+
+
+.showDateIp{
+	color:#CC0E0E;
+	font-size:12px;
+	margin:3px auto;
+	text-align:center;
+}
+
+#sumIp{
+	color:#CE7474;
+	margin:3px auto;
+	text-align:center;
+}
+
+.showDateSumIp{
+	color:#CE7474;
+	font-size:12px;
+	margin:3px auto;
+	text-align:center;
+}
+
+#sp{
+	color:#C86365;
+	margin:3px auto;
+	text-align:center;
+}
+
+.showDateSp{
+	color:#C86365;
+	font-size:12px;
+	margin:3px auto;
+	text-align:center;
+}
+
+
+
+#cure{
+	color:#259D85;
+	margin:3px auto;
+	text-align:center;
+}
+
+.showDateCure{
+	color:#259D85;
+	font-size:12px;
+	margin:3px auto;
+	text-align:center;
+}
+
+#dead{
+	color:black;
+	margin:3px auto;
+	text-align:center;
+}
+
+.showDateDead{
+	color:black;
+	font-size:12px;
+	margin:3px auto;
+	text-align:center;
+}
+.selected{
+	background-color:#DF452F;
+}

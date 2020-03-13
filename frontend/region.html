@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>新冠肺炎实时疫情</title>
+	<link rel="stylesheet" type="text/css" href="static/css/main.css" />
+	<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+</head>
+<body>
+	<div id="header">
+			<h1 style="display:inline;margin:5px 10px"><b id="area_name"></b>新冠肺炎疫情情况</h1>
+			<input type="date" id="nowDateTime"/>
+			<div id="pageJump">
+				<p id="pageJumpFont" style="margin:5px 10px 5px 184px"><a href="index.html">返回</a></p>
+				<img src="static/img/moveIcon.png" style="margin: 22px 0px -14px 0px" />
+			</div>
+	</div>
+	
+	<div id="wrap">
+		
+		<div id="content">
+			<div class="escMesage" style="width:550px">
+				<ul class="showEsc">
+					<li class="esc">当前确诊</li>
+					<li id="ip">0</li>
+					<li class="showDateIp">昨日<b id="addIp">0</b></li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">累计确诊</li>
+					<li id="sumIp">0</li>
+					<li class="showDateSumIp">昨日<b id="addSumIp">0</b></li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">累计治愈</li>
+					<li id="cure">0</li>
+					<li class="showDateCure">昨日<b id="addCure">0</b></li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">累计死亡</li>
+					<li id="dead">0</li>
+					<li class="showDateDead">昨日<b id="addDead">0</b></li>
+				</ul>
+				<p style="clear:both"></p>
+			</div>
+		
+			<div class="escMesage" id="trendButtons" style="width:791px">
+				<button class="trandChartButton selected" id="newIpTrend">疫情新增趋势</button>
+				<button class="trandChartButton" id="ipTrend">确诊趋势</button>
+				<button class="trandChartButton" id="cureDiedTrend">累计治愈死亡</button>
+				<button class="trandChartButton" id="cureDiedRateTrend">治愈与死亡率</button>
+			</div>
+			
+			<div id="trendChart" style="width:775px;height:700px">
+		
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var trendChart = echarts.init(document.getElementById('trendChart'));
+		let newConfirmTrendData = [];
+		let nowConfirmTrendData = [];
+		let confirmedTrendData = [];
+		let cureTrendData = [];
+		let diedTrendData = [];
+		let cureRateTrendData = [];
+		let	diedRateTrendData = [];
+
+		function getQueryVariable(variable)
+		{
+			var query = window.location.search.substring(1);
+			var vars = query.split("&");
+			for (var i=0;i<vars.length;i++) {
+				var pair = vars[i].split("=");
+				if(pair[0] == variable){return pair[1];}
+			}
+			return(false);
+		}
+
+        function update_summary_data(data) {
+			$('#ip').text(data.nowConfirm)
+			$('#addIp').text(data.newNowConfirm)
+			$('#sumIp').text(data.confirmed)
+			$('#addSumIp').text(data.newConfirmed);
+			$('#sp').text(data.unconfirmed);
+			$('#addSp').text(data.newUnconfirmed);
+			$('#cure').text(data.cured);
+			$('#addCure').text(data.newCured);
+			$('#dead').text(data.died);
+			$('#addDead').text(data.newDied);
+		}
+
+		function update_trend_data (dateData, trendData) {
+
+			newConfirmTrendData = trendData.newNowConfirmed;
+			confirmedTrendData = trendData.confirmed;
+			cureTrendData = trendData.cured
+			diedTrendData = trendData.died
+
+			nowConfirmTrendData = [];
+
+			cureRateTrendData = [];
+			diedRateTrendData = [];
+
+			for(let i=0; i<confirmedTrendData.length; i++){
+				nowConfirmTrendData.push(confirmedTrendData[i]-cureTrendData[i]-diedTrendData[i])
+				cureRateTrendData.push(cureTrendData[i]/confirmedTrendData[i])
+				diedRateTrendData.push(diedTrendData[i]/confirmedTrendData[i])
+			}
+
+			trendOptions = {
+				legend: {data: ['新增确诊']},
+				tooltip: {
+					trigger: 'axis',
+				},
+				xAxis: {
+					data: dateData,
+				},
+				yAxis: [{
+					type: 'value',
+					name:'单位：例',
+				}],
+				series: [{
+					name: '新增确诊',
+					type: 'line',
+					smooth: 'true',
+					data: newConfirmTrendData
+				}]
+			};
+
+			trendChart.setOption(trendOptions);
+		}
+
+		$(document).ready(function () {
+			let name = getQueryVariable('name')
+			if (name === false) {
+				window.location.href="index.html";
+			}
+
+			$.get('/api/province?name='+name, function (data, status) {
+				if (status !== 'success'){
+					alert('获取数据失败')
+				} else {
+					if (data === ""){
+						window.location.href="index.html";
+					}
+					data = JSON.parse(data)
+					$('#area_name').text(data.name)
+					update_summary_data(data.summary_data);
+					update_trend_data(data.date, data.trend_data)
+				}
+			})
+
+			$('#newIpTrend').click(function () {
+				$('#trendButtons button').removeClass('selected')
+				$('#newIpTrend').addClass('selected')
+				trendOptions.series =  [{
+					name: '新增确诊',
+					type: 'line',
+					smooth: 'true',
+					data: newConfirmTrendData
+				}]
+				trendOptions.yAxis= [{
+					type: 'value',
+					name:'单位：例',
+				}],
+				trendOptions.legend = {data:['新增确诊']}
+				trendChart.clear();
+				trendChart.setOption(trendOptions);
+			});
+
+			$('#ipTrend').click(function () {
+				$('#trendButtons button').removeClass('selected')
+				$('#ipTrend').addClass('selected')
+				trendOptions.series =  [{
+					name: '累计确诊',
+					type: 'line',
+					smooth: 'true',
+					data: confirmedTrendData
+				},{
+					name: '当前确诊',
+					type: 'line',
+					smooth: 'true',
+					data: nowConfirmTrendData
+				}]
+				trendOptions.yAxis= [{
+					type: 'value',
+					name:'单位：例',
+				}],
+				trendOptions.legend = {data:['累计确诊', '当前确诊']}
+				trendChart.clear();
+				trendChart.setOption(trendOptions);
+			});
+			$('#cureDiedTrend').click(function () {
+				$('#trendButtons button').removeClass('selected')
+				$('#cureDiedTrend').addClass('selected')
+				trendOptions.yAxis= [{
+					type: 'value',
+					name:'单位：例',
+				}],
+				trendOptions.series =  [{
+					name: '累计治愈',
+					type: 'line',
+					smooth: 'true',
+					data: cureTrendData
+				},{
+					name: '累计死亡',
+					type: 'line',
+					smooth: 'true',
+					data: diedTrendData
+				}]
+				trendOptions.legend = {data:['累计治愈', '累计死亡']}
+				trendChart.clear();
+				trendChart.setOption(trendOptions);
+			});
+			$('#cureDiedRateTrend').click(function () {
+				$('#trendButtons button').removeClass('selected')
+				$('#cureDiedRateTrend').addClass('selected')
+				trendOptions.yAxis= [{
+					type: 'value',
+					max: 1,
+					min: 0
+				}],
+				trendOptions.series =  [{
+					name: '治愈率',
+					type: 'line',
+					smooth: 'true',
+					data: cureRateTrendData
+				},{
+					name: '死亡率',
+					type: 'line',
+					smooth: 'true',
+					data: diedRateTrendData
+				}]
+				trendOptions.legend = {data:['治愈率', '死亡率']}
+				trendChart.clear();
+				trendChart.setOption(trendOptions);
+			});
+		})
+
+    </script>
+</body>
+</html>

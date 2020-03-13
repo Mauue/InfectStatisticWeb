@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>新冠肺炎实时疫情</title>
+	<link rel="stylesheet" type="text/css" href="static/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="static/css/index.css" />
+	<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+
+
+</head>
+<body>
+	<div id="header">
+			<h1 style="display:inline;margin:5px 10px">新冠肺炎疫情情况</h1>
+			<input type="date" id="nowDateTime"/>
+			<div id="pageJump">
+				<p id="pageJumpFont" style="margin:36px 10px 5px 159px"><a href="news.html">最新资讯</a></p>
+				<img src="static/img/moveIcon.png"  style="margin:20px 0px -13px 0px"/>
+			</div>
+	</div>
+	
+	<div id="wrap">
+		<div id="content">
+		
+			<div class="escMesage">
+				<ul class="showEsc">
+					<li class="esc">当前确诊</li>
+					<li id="ip">12131</li>
+					<li class="showDateIp">昨日<b id="addIp">2000</b></li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">累计确诊</li>
+					<li id="sumIp">01212</li>
+					<li class="showDateSumIp">昨日<b id="addSumIp">012</b></li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">现有疑似</li>
+					<li id="sp">0</li>
+					<li class="showDateSp">昨日<b id="addSp">0</b></li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">累计治愈</li>
+					<li id="cure">0</li>
+					<li class="showDateCure">昨日<b id="addCure">0</b></li>
+				</ul>
+				<ul class="showEsc">
+					<li class="esc">累计死亡</li>
+					<li id="dead">0</li>
+					<li class="showDateDead">昨日<b id="addDead">0</b></li>
+				</ul>
+				<p style="clear:both"></p>
+			</div>
+			
+			<div class="showMapButtonSet">
+				<button class="showMapButton selected" id="nationalwideIp">全国当前确诊情况
+				</button><button class="showMapButton" id="nationalwideSumIp">全国累计确诊情况</button>
+			</div>
+			<div style="height: 800px;  margin: 0">
+				<div id="map" style="height: 800px;width: 800px"></div>
+			</div>
+
+			<div class="escMesage" id="trendButtons" style="width:789px">
+				<button class="trandChartButton selected" id="newIpTrend">全国疫情新增趋势</button>
+				<button class="trandChartButton" id="ipTrend">全国累计确诊疑似</button>
+				<button class="trandChartButton" id="cureDiedTrend">全国累计治愈死亡</button>
+				<button class="trandChartButton" id="cureDiedRateTrend">治愈与死亡率</button>
+			</div>
+			
+			<div id="trendChart" style="width:775px;height:700px">
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        let trendChart = echarts.init(document.getElementById('trendChart'));
+
+        let mapDom = document.getElementById('map');
+		let mapChart = echarts.init(mapDom);
+
+		let nowConfirmData = [];
+		let confirmedData = [];
+
+		let newConfirmTrendData = [];
+		let nowConfirmTrendData = [];
+		let confirmedTrendData = [];
+		let unconfirmedTrendData = [];
+		let cureTrendData = [];
+		let diedTrendData = [];
+		let cureRateTrendData = [];
+		let	diedRateTrendData = [];
+
+		let mapOptions = {};
+		let trendOptions = {};
+
+
+        function update_china_data(data) {
+			$('#ip').text(data.nowConfirm)
+			$('#addIp').text(data.newNowConfirm)
+			$('#sumIp').text(data.confirmed)
+			$('#addSumIp').text(data.newConfirmed);
+			$('#sp').text(data.unconfirmed);
+			$('#addSp').text(data.newUnconfirmed);
+			$('#cure').text(data.cured);
+			$('#addCure').text(data.newCured);
+			$('#dead').text(data.died);
+			$('#addDead').text(data.newDied);
+		}
+		
+		function update_china_map(data) {
+			confirmedData = [];
+			nowConfirmData = [];
+        	for(let i=0; i<data.length; i++){
+        		nowConfirmData.push({'name': data[i].name, 'value': data[i].nowConfirm})
+        		confirmedData.push({'name': data[i].name, 'value': data[i].confirmed})
+			}
+			mapOptions = {
+        		title: {
+					subtext: '点击省份查看详情'
+				},
+				tooltip : {
+					trigger: 'item'
+				},
+				visualMap: {
+					type: 'piecewise',
+					min: 0,
+					max: 300,
+					left: 'left',
+					bottom: '20%',        // 文本，默认为数值文本
+					calculable : true,
+					pieces: [
+						{value: 0, color: '#fff'},
+						{min: 1, max: 9, color: 'rgb(255,170,133)'},
+						{min: 10, max: 99, color: 'rgb(255,123,105)'},
+						{min: 100, max: 999, color: 'rgb(204,41,41)'},
+						{min: 1000, max: 9999, color: 'rgb(140,13,13)'},
+						{min: 10000, color: 'rgb(102,2,8)'}
+					],
+					orient: 'horizontal',
+				},
+				regions: [
+					{
+						name: "南海诸岛",
+						value: 0,
+						itemStyle: {
+							normal: {
+								opacity: 0,
+								label: {
+									show: false
+								}
+							}
+						}
+					}
+				],
+				series :
+					{
+						name: '感染人数',
+						type: 'map',
+						mapType: 'china',
+						roam: false,
+						center: [110.97, 29.71],
+						showLegendSymbol: false,
+						label: {
+							normal: {
+								show: true
+							},
+							emphasis: {
+								show: true
+							}
+						},
+
+						data: nowConfirmData,
+						colorMappingBy: 'value'
+					}
+			};
+			mapChart.setOption(mapOptions, true);
+		}
+		
+		function update_china_trend(data) {
+        	let dateData = data.date
+        	let trendData = data.data
+			newConfirmTrendData = trendData.newNowConfirmed;
+			unconfirmedTrendData = trendData.unconfirmed;
+			confirmedTrendData = trendData.confirmed;
+			cureTrendData = trendData.cured
+			diedTrendData = trendData.died
+
+			nowConfirmTrendData = [];
+
+			cureRateTrendData = [];
+			diedRateTrendData = [];
+
+			for(let i=0; i<confirmedTrendData.length; i++){
+				nowConfirmTrendData.push(confirmedTrendData[i]-cureTrendData[i]-diedTrendData[i])
+				cureRateTrendData.push(cureTrendData[i]/confirmedTrendData[i])
+				diedRateTrendData.push(diedTrendData[i]/confirmedTrendData[i])
+			}
+
+			trendOptions = {
+				legend: {data: ['新增确诊']},
+				tooltip: {
+					trigger: 'axis',
+				},
+				xAxis: {
+					data: dateData,
+				},
+				yAxis: [{
+					type: 'value',
+					name:'单位：例',
+				}],
+				series: [{
+					name: '新增确诊',
+					type: 'line',
+					smooth: 'true',
+					data: newConfirmTrendData
+				}]
+			};
+
+			trendChart.setOption(trendOptions);
+		}
+		function update_all_data(){
+			$.get('/api/index', function (data, status) {
+				if (status !== 'success'){
+					alert('获取数据失败')
+				} else {
+					data = JSON.parse(data)
+					update_china_data(data.china_data)
+					update_china_map(data.province_data)
+					update_china_trend(data.china_trend_data)
+					document.getElementById('nowDateTime').setAttribute()
+				}
+			})
+		}
+
+
+		$(document).ready(function(){
+			update_all_data();
+			$('#nationalwideIp').click(function () {
+				$('#nationalwideIp').addClass('selected')
+				$('#nationalwideSumIp').removeClass('selected')
+				mapOptions.series.data = nowConfirmData;
+				mapChart.setOption(mapOptions, true);
+			});
+			$('#nationalwideSumIp').click(function () {
+				$('#nationalwideIp').removeClass('selected')
+				$('#nationalwideSumIp').addClass('selected')
+				mapOptions.series.data = confirmedData;
+				mapChart.setOption(mapOptions, true);
+			});
+
+			$('#newIpTrend').click(function () {
+				$('#trendButtons button').removeClass('selected')
+				$('#newIpTrend').addClass('selected')
+				trendOptions.series =  [{
+					name: '新增确诊',
+					type: 'line',
+					smooth: 'true',
+					data: newConfirmTrendData
+				}]
+				trendOptions.yAxis= [{
+					type: 'value',
+					name:'单位：例',
+				}],
+				trendOptions.legend = {data:['新增确诊']}
+				trendChart.clear();
+				trendChart.setOption(trendOptions);
+			});
+
+			$('#ipTrend').click(function () {
+				$('#trendButtons button').removeClass('selected')
+				$('#ipTrend').addClass('selected')
+				trendOptions.series =  [{
+					name: '累计确诊',
+					type: 'line',
+					smooth: 'true',
+					data: confirmedTrendData
+				},{
+					name: '当前确诊',
+					type: 'line',
+					smooth: 'true',
+					data: nowConfirmTrendData
+				},{
+					name: '疑似病例',
+					type: 'line',
+					smooth: 'true',
+					data: unconfirmedTrendData
+				}]
+				trendOptions.yAxis= [{
+					type: 'value',
+					name:'单位：例',
+				}],
+				trendOptions.legend = {data:['累计确诊', '当前确诊', '疑似病例']}
+				trendChart.clear();
+				trendChart.setOption(trendOptions);
+			});
+			$('#cureDiedTrend').click(function () {
+				$('#trendButtons button').removeClass('selected')
+				$('#cureDiedTrend').addClass('selected')
+				trendOptions.yAxis= [{
+					type: 'value',
+					name:'单位：例',
+				}],
+				trendOptions.series =  [{
+					name: '累计治愈',
+					type: 'line',
+					smooth: 'true',
+					data: cureTrendData
+				},{
+					name: '累计死亡',
+					type: 'line',
+					smooth: 'true',
+					data: diedTrendData
+				}]
+				trendOptions.legend = {data:['累计治愈', '累计死亡']}
+				trendChart.clear();
+				trendChart.setOption(trendOptions);
+			});
+			$('#cureDiedRateTrend').click(function () {
+				$('#trendButtons button').removeClass('selected')
+				$('#cureDiedRateTrend').addClass('selected')
+				trendOptions.yAxis= [{
+					type: 'value',
+					max: 1,
+					min: 0
+				}],
+				trendOptions.series =  [{
+					name: '治愈率',
+					type: 'line',
+					smooth: 'true',
+					data: cureRateTrendData
+				},{
+					name: '死亡率',
+					type: 'line',
+					smooth: 'true',
+					data: diedRateTrendData
+				}]
+				trendOptions.legend = {data:['治愈率', '死亡率']}
+				trendChart.clear();
+				trendChart.setOption(trendOptions);
+			});
+
+			mapChart.on('click', function (params) {
+				window.location.href=("region.html?name="+params.name);
+			})
+
+		})
+    </script>
+</body>
+</html>
