@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div id="header">
-			<h1 style="display:inline;margin:5px 10px"><b>地区名</b>新冠肺炎疫情情况</h1>
+			<h1 style="display:inline;margin:5px 10px"><b id="area_name"></b>新冠肺炎疫情情况</h1>
 			<input type="date" id="nowDateTime"/>
 			<div id="pageJump">
 				<p id="pageJumpFont" style="margin:5px 10px 5px 184px"><a href="index.html">返回</a></p>
@@ -24,7 +24,7 @@
 			<div class="escMesage" style="width:550px">
 				<ul class="showEsc">
 					<li class="esc">当前确诊</li>
-					<li id="ip">12131</li>
+					<li id="ip">0</li>
 					<li class="showDateIp">昨日<b id="addIp">0</b></li>
 				</ul>
 				<ul class="showEsc">
@@ -139,6 +139,7 @@
 			if (name === false) {
 				window.location.href="index.html";
 			}
+
 			$.get('/api/province?name='+name, function (data, status) {
 				if (status !== 'success'){
 					alert('获取数据失败')
@@ -147,6 +148,7 @@
 						window.location.href="index.html";
 					}
 					data = JSON.parse(data)
+					$('#area_name').text(data.name)
 					update_summary_data(data.summary_data);
 					update_trend_data(data.date, data.trend_data)
 				}
