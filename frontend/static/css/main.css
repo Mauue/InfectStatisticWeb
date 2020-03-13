@@ -5,7 +5,7 @@ html,body{
 
 #wrap {
     margin:0 auto;
-    width: 800px;
+    width: 900px;
 	background-color:white;
 	border-style:solid;
 	border-width:0px;
@@ -14,13 +14,18 @@ html,body{
 #header{
 	background-color:white;
 	color:#538AB9;
+	margin-bottom:70px;
 }
 
 #content{
-	background-color:white;
+	/*background-image:url(../img/backImage.png);*/
+	padding-top:30px;
+	padding-bottom:20px;
 }
 
 #trendChart{
+	margin-top:20px;
+	margin-left:56px;
 	background-color:white;
 }
 
@@ -41,16 +46,19 @@ html,body{
 }
 
 .escMesage{
-	width: 678px;
-	margin:200px auto 0px;
+	width: 614px;
+	margin:100px auto 0px;
 }
 
 .trandChartButton{
 	margin:0;
+	margin-left:-1px;
 	height:40px;
-	width:169px;
+	width:194px;
 	font-size:15px;
 	border-width:1px;
+	border-color:#BBBBBB;
+	background-color:white;
 }
 
 #pageJump{
@@ -73,9 +81,10 @@ html,body{
 	text-align:center;
 }
 
-#addIp{
+
+.showDateIp{
 	color:#CC0E0E;
-	font-size:8px;
+	font-size:12px;
 	margin:3px auto;
 	text-align:center;
 }
@@ -86,9 +95,9 @@ html,body{
 	text-align:center;
 }
 
-#addSumIp{
+.showDateSumIp{
 	color:#CE7474;
-	font-size:8px;
+	font-size:12px;
 	margin:3px auto;
 	text-align:center;
 }
@@ -99,12 +108,14 @@ html,body{
 	text-align:center;
 }
 
-#addSp{
+.showDateSp{
 	color:#C86365;
-	font-size:8px;
+	font-size:12px;
 	margin:3px auto;
 	text-align:center;
 }
+
+
 
 #cure{
 	color:#259D85;
@@ -112,9 +123,9 @@ html,body{
 	text-align:center;
 }
 
-#addCure{
+.showDateCure{
 	color:#259D85;
-	font-size:8px;
+	font-size:12px;
 	margin:3px auto;
 	text-align:center;
 }
@@ -125,9 +136,9 @@ html,body{
 	text-align:center;
 }
 
-#addDead{
+.showDateDead{
 	color:black;
-	font-size:8px;
+	font-size:12px;
 	margin:3px auto;
 	text-align:center;
 }
