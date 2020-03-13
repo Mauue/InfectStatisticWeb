@@ -83,13 +83,13 @@ def get_china_trend_data(data):
         'date': data['updateDate'],
         'data': None
     }
-    trend_data_list = []
+    _dict = {}
+    print(data['list'])
     for i in data['list']:
-        trend_data_list.append({
-            'name': _storage_name_chinese[i['name']],
-            'data': i['data']
+        _dict.update({
+            _storage_name_chinese[i['name']]: i['data']
         })
-    trend_data_dict['data'] = trend_data_list
+    trend_data_dict['data'] = _dict
     return trend_data_dict
 
 

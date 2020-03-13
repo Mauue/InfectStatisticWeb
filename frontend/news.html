@@ -6,6 +6,8 @@
     <title>新冠肺炎实时疫情</title>
 	<link rel="stylesheet" type="text/css" href="static/css/news.css" />
 	<link rel="stylesheet" type="text/css" href="static/css/main.css" />
+	<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
 </head>
 <body>
 	<div id="header">
@@ -72,8 +74,47 @@
 				
 				<h4 class="no4To10">5.</h4><a href="javascript:void(0)" id="rumor5">谣言5</a>
 				<img src="static/img/rumorIcon.png" style="margin-left:10px;vertical-align:bottom" />
+				<div class="lines"></div>
+
+				<h4 class="no4To10">6.</h4><a href="javascript:void(0)" id="rumor6">谣言6</a>
+				<img src="static/img/rumorIcon.png" style="margin-left:10px;vertical-align:bottom" />
+				<div class="lines"></div>
+
+				<h4 class="no4To10">7.</h4><a href="javascript:void(0)" id="rumor7">谣言7</a>
+				<img src="static/img/rumorIcon.png" style="margin-left:10px;vertical-align:bottom" />
+				<div class="lines"></div>
+
+				<h4 class="no4To10">8.</h4><a href="javascript:void(0)" id="rumor8">谣言8</a>
+				<img src="static/img/rumorIcon.png" style="margin-left:10px;vertical-align:bottom" />
+				<div class="lines"></div>
 			</div>
 		</div>
 	</div>
 </body>
+<script>
+	function update_news (data) {
+		let news = data.news;
+		let fake_news = data.fake_news;
+
+		for (let i=1;i<=8;i++) {
+			let news_dom = document.getElementById('new'+ i.toString());
+			let fake_dom = document.getElementById('rumor'+ i.toString());
+			news_dom.setAttribute('href', news[i-1].url);
+			news_dom.innerText = news[i-1].title;
+			fake_dom.setAttribute('href', fake_news[i-1].url);
+			fake_dom.innerText = fake_news[i-1].title;
+		}
+
+	}
+	$(document).ready(function () {
+		$.get('/api/news', function (data, status) {
+				if (status !== 'success'){
+					alert('获取数据失败')
+				} else {
+					data = JSON.parse(data)
+					update_news(data)
+				}
+			})
+	})
+</script>
 </html>

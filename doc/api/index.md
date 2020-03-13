@@ -34,27 +34,21 @@
                 ...
             }
         ],
-        "chine_trend_data": {
+        "china_trend_data": {
             "date": [
                 "1.26", 
                 ..., 
                 "3.9"
             ],
-            "data": [
-                {
-                    "name": "confirmed",
-                    "data": [
-                        1,
-                        ...,
-                        80924
-                    ]
-                }, {
-                ...
-                }, {
-                    "name": "NewDied",
-                    "data": [...]
-                }
-            ]
+            "data": {
+                "confirmed": [2761, 4535, ..., 81003],
+                "unconfirmed": [5794, 6973, ..., 147],
+                "cured": [51, 60, ..., 64216],
+                "died": [80, 106, ..., 3180],
+                "newNowConfirmed": [769, 1771, ..., 11],
+                "newUnconfirmed": [3806, 2077, ..., 33],
+                "newCured": [2, 9, ..., 1329],
+                "newDied": [24, 26, ..., 7]}
         }
     }
     ```
