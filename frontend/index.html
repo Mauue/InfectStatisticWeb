@@ -62,7 +62,7 @@
 				<button class="showMapButton selected" id="nationalwideIp">全国当前确诊情况
 				</button><button class="showMapButton" id="nationalwideSumIp">全国累计确诊情况</button>
 			</div>
-			<div style="height: 800px;  margin: 0">
+			<div style="height: 800px;  margin: 0; padding-left: 120px;">
 				<div id="map" style="height: 800px;width: 800px"></div>
 			</div>
 
@@ -124,6 +124,9 @@
 			mapOptions = {
         		title: {
 					subtext: '点击省份查看详情'
+				},
+				legend:{
+        			left:'50%'
 				},
 				tooltip : {
 					trigger: 'item'
@@ -234,7 +237,6 @@
 					update_china_data(data.china_data)
 					update_china_map(data.province_data)
 					update_china_trend(data.china_trend_data)
-					document.getElementById('nowDateTime').setAttribute()
 				}
 			})
 		}
