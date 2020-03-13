@@ -20,7 +20,6 @@
 <body>
 	<div id="header">
 			<h1 style="display:inline;margin:5px 10px">新冠肺炎疫情情况</h1>
-			<input type="date" id="nowDateTime"/>
 			<div id="pageJump">
 				<p id="pageJumpFont" style="margin:36px 10px 5px 159px"><a href="news.html">最新资讯</a></p>
 				<img src="static/img/moveIcon.png"  style="margin:20px 0px -13px 0px"/>
@@ -63,7 +62,7 @@
 				<button class="showMapButton selected" id="nationalwideIp">全国当前确诊情况
 				</button><button class="showMapButton" id="nationalwideSumIp">全国累计确诊情况</button>
 			</div>
-			<div style="height: 800px;  margin: 0">
+			<div style="height: 800px;  margin: 0; padding-left: 120px;">
 				<div id="map" style="height: 800px;width: 800px"></div>
 			</div>
 
@@ -125,6 +124,9 @@
 			mapOptions = {
         		title: {
 					subtext: '点击省份查看详情'
+				},
+				legend:{
+        			left:'50%'
 				},
 				tooltip : {
 					trigger: 'item'
@@ -235,7 +237,6 @@
 					update_china_data(data.china_data)
 					update_china_map(data.province_data)
 					update_china_trend(data.china_trend_data)
-					document.getElementById('nowDateTime').setAttribute()
 				}
 			})
 		}
