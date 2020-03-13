@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <title>新冠肺炎实时疫情</title>
 	<link rel="stylesheet" type="text/css" href="static/css/main.css" />
-	<script src="static/js/region.js"></script>
+	<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 </head>
 <body>
@@ -65,32 +65,184 @@
 	
 	<script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('trendChart'));
+        var trendChart = echarts.init(document.getElementById('trendChart'));
+		let newConfirmTrendData = [];
+		let nowConfirmTrendData = [];
+		let confirmedTrendData = [];
+		let cureTrendData = [];
+		let diedTrendData = [];
+		let cureRateTrendData = [];
+		let	diedRateTrendData = [];
 
-        // 指定图表的配置项和数据
-        var option = {
-            title: {},
-            tooltip: {
-				trigger: 'axis',
-				axisPointer: {
-					type: 'cross'
+		function getQueryVariable(variable)
+		{
+			var query = window.location.search.substring(1);
+			var vars = query.split("&");
+			for (var i=0;i<vars.length;i++) {
+				var pair = vars[i].split("=");
+				if(pair[0] == variable){return pair[1];}
+			}
+			return(false);
+		}
+
+        function update_summary_data(data) {
+			$('#ip').text(data.nowConfirm)
+			$('#addIp').text(data.newNowConfirm)
+			$('#sumIp').text(data.confirmed)
+			$('#addSumIp').text(data.newConfirmed);
+			$('#sp').text(data.unconfirmed);
+			$('#addSp').text(data.newUnconfirmed);
+			$('#cure').text(data.cured);
+			$('#addCure').text(data.newCured);
+			$('#dead').text(data.died);
+			$('#addDead').text(data.newDied);
+		}
+
+		function update_trend_data (dateData, trendData) {
+
+			newConfirmTrendData = trendData.newNowConfirmed;
+			confirmedTrendData = trendData.confirmed;
+			cureTrendData = trendData.cured
+			diedTrendData = trendData.died
+
+			nowConfirmTrendData = [];
+
+			cureRateTrendData = [];
+			diedRateTrendData = [];
+
+			for(let i=0; i<confirmedTrendData.length; i++){
+				nowConfirmTrendData.push(confirmedTrendData[i]-cureTrendData[i]-diedTrendData[i])
+				cureRateTrendData.push(cureTrendData[i]/confirmedTrendData[i])
+				diedRateTrendData.push(diedTrendData[i]/confirmedTrendData[i])
+			}
+
+			trendOptions = {
+				legend: {data: ['新增确诊']},
+				tooltip: {
+					trigger: 'axis',
+				},
+				xAxis: {
+					data: dateData,
+				},
+				yAxis: [{
+					type: 'value',
+					name:'单位：例',
+				}],
+				series: [{
+					name: '新增确诊',
+					type: 'line',
+					smooth: 'true',
+					data: newConfirmTrendData
+				}]
+			};
+
+			trendChart.setOption(trendOptions);
+		}
+
+		$(document).ready(function () {
+			let name = getQueryVariable('name')
+			if (name === false) {
+				window.location.href="index.html";
+			}
+			$.get('/api/province?name='+name, function (data, status) {
+				if (status !== 'success'){
+					alert('获取数据失败')
+				} else {
+					if (data === ""){
+						window.location.href="index.html";
+					}
+					data = JSON.parse(data)
+					update_summary_data(data.summary_data);
+					update_trend_data(data.date, data.trend_data)
 				}
-			},
-            legend: {},
-            xAxis: {
-                data: ["1-26","1-27","1-28","1-29","1-30","1-31","2-1","2-2","2-3","2-4","2-5","2-6","2-7","2-8","2-9"]
-            },
-            yAxis: [{
-				type: 'value',
-				name:'单位：例',
-			}],
-            series: [{
-				name: '新增确诊',
-                type: 'line',
-				smooth: 'true',
-                data: [5, 20, 36, 10, 10, 20, 20, 36, 10, 10, 20, 20, 36, 10, 10]
-            }]
-        };
+			})
+
+			$('#newIpTrend').click(function () {
+				$('#trendButtons button').removeClass('selected')
+				$('#newIpTrend').addClass('selected')
+				trendOptions.series =  [{
+					name: '新增确诊',
+					type: 'line',
+					smooth: 'true',
+					data: newConfirmTrendData
+				}]
+				trendOptions.yAxis= [{
+					type: 'value',
+					name:'单位：例',
+				}],
+				trendOptions.legend = {data:['新增确诊']}
+				trendChart.clear();
+				trendChart.setOption(trendOptions);
+			});
+
+			$('#ipTrend').click(function () {
+				$('#trendButtons button').removeClass('selected')
+				$('#ipTrend').addClass('selected')
+				trendOptions.series =  [{
+					name: '累计确诊',
+					type: 'line',
+					smooth: 'true',
+					data: confirmedTrendData
+				},{
+					name: '当前确诊',
+					type: 'line',
+					smooth: 'true',
+					data: nowConfirmTrendData
+				}]
+				trendOptions.yAxis= [{
+					type: 'value',
+					name:'单位：例',
+				}],
+				trendOptions.legend = {data:['累计确诊', '当前确诊']}
+				trendChart.clear();
+				trendChart.setOption(trendOptions);
+			});
+			$('#cureDiedTrend').click(function () {
+				$('#trendButtons button').removeClass('selected')
+				$('#cureDiedTrend').addClass('selected')
+				trendOptions.yAxis= [{
+					type: 'value',
+					name:'单位：例',
+				}],
+				trendOptions.series =  [{
+					name: '累计治愈',
+					type: 'line',
+					smooth: 'true',
+					data: cureTrendData
+				},{
+					name: '累计死亡',
+					type: 'line',
+					smooth: 'true',
+					data: diedTrendData
+				}]
+				trendOptions.legend = {data:['累计治愈', '累计死亡']}
+				trendChart.clear();
+				trendChart.setOption(trendOptions);
+			});
+			$('#cureDiedRateTrend').click(function () {
+				$('#trendButtons button').removeClass('selected')
+				$('#cureDiedRateTrend').addClass('selected')
+				trendOptions.yAxis= [{
+					type: 'value',
+					max: 1,
+					min: 0
+				}],
+				trendOptions.series =  [{
+					name: '治愈率',
+					type: 'line',
+					smooth: 'true',
+					data: cureRateTrendData
+				},{
+					name: '死亡率',
+					type: 'line',
+					smooth: 'true',
+					data: diedRateTrendData
+				}]
+				trendOptions.legend = {data:['治愈率', '死亡率']}
+				trendChart.clear();
+				trendChart.setOption(trendOptions);
+			});
+		})
 
     </script>
 </body>
