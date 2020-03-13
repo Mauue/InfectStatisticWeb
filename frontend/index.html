@@ -9,6 +9,14 @@
 	<script type="text/javascript" src="static/js/index.js"></script>
 	<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+
+
 </head>
 <body>
 	<div id="header">
@@ -53,14 +61,13 @@
 			</div>
 			
 			<div class="showMapButtonSet">
-				<button class="showMapButton" id="nationalwideIp">全国当前确诊情况
+				<button class="showMapButton selected" id="nationalwideIp">全国当前确诊情况
 				</button><button class="showMapButton" id="nationalwideSumIp">全国累计确诊情况</button>
 			</div>
-			
-			<div>
-				<iframe src="map-polygon.html" frameBorder="0" width="800" scrolling="no" height="900"></iframe>
+			<div style="height: 600px;  margin: 0">
+				<div id="map" style="height: 800px;width: 800px"></div>
 			</div>
-			
+
 			<div class="escMesage" style="width:775px">
 				<button class="trandChartButton" style="background-color:red">全国疫情新增趋势
 				</button><button class="trandChartButton">全国累计确诊疑似
@@ -75,7 +82,14 @@
 	
 	<script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('trendChart'));
+        let myChart = echarts.init(document.getElementById('trendChart'));
+
+        let mapDom = document.getElementById('map');
+		let mapChart = echarts.init(mapDom);
+		let nowConfirmData = [];
+		let confirmedData = [];
+		let mapOptions = {};
+
 
 
         function update_china_data(data) {
@@ -92,13 +106,74 @@
 		}
 		
 		function update_china_map(data) {
+			confirmedData = [];
+			nowConfirmData = [];
+        	for(let i=0; i<data.length; i++){
+        		nowConfirmData.push({'name': data[i].name, 'value': data[i].nowConfirm})
+        		confirmedData.push({'name': data[i].name, 'value': data[i].confirmed})
+			}
+			mapOptions = {
+				tooltip : {
+					trigger: 'item'
+				},
+				visualMap: {
+					type: 'piecewise',
+					min: 0,
+					max: 300,
+					left: 'left',
+					bottom: '20%',        // 文本，默认为数值文本
+					calculable : true,
+					pieces: [
+						{value: 0, color: '#fff'},
+						{min: 1, max: 9, color: 'rgb(255,170,133)'},
+						{min: 10, max: 99, color: 'rgb(255,123,105)'},
+						{min: 100, max: 999, color: 'rgb(204,41,41)'},
+						{min: 1000, max: 9999, color: 'rgb(140,13,13)'},
+						{min: 10000, color: 'rgb(102,2,8)'}
+					],
+					orient: 'horizontal',
+				},
+				regions: [
+					{
+						name: "南海诸岛",
+						value: 0,
+						itemStyle: {
+							normal: {
+								opacity: 0,
+								label: {
+									show: false
+								}
+							}
+						}
+					}
+				],
+				series :
+					{
+						name: '感染人数',
+						type: 'map',
+						mapType: 'china',
+						roam: false,
+						center: [110.97, 29.71],
+						showLegendSymbol: false,
+						label: {
+							normal: {
+								show: true
+							},
+							emphasis: {
+								show: true
+							}
+						},
 
+						data: nowConfirmData,
+						colorMappingBy: 'value'
+					}
+			};
+			mapChart.setOption(mapOptions, true);
 		}
 		
 		function update_china_trend(data) {
 
 		}
-
 		function update_all_data(){
 			$.get('/api/index', function (data, status) {
 				if (status !== 'success'){
@@ -115,6 +190,19 @@
 
 		$(document).ready(function(){
 			update_all_data();
+			$('#nationalwideIp').click(function () {
+				$('#nationalwideIp').addClass('selected')
+				$('#nationalwideSumIp').removeClass('selected')
+				mapOptions.series.data = nowConfirmData;
+				mapChart.setOption(mapOptions, true);
+			})
+			$('#nationalwideSumIp').click(function () {
+				$('#nationalwideIp').removeClass('selected')
+				$('#nationalwideSumIp').addClass('selected')
+				mapOptions.series.data = confirmedData;
+				mapChart.setOption(mapOptions, true);
+			})
+
 		})
 
         // 指定图表的配置项和数据
