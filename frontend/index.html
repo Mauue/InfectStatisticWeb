@@ -123,6 +123,9 @@
         		confirmedData.push({'name': data[i].name, 'value': data[i].confirmed})
 			}
 			mapOptions = {
+        		title: {
+					subtext: '点击省份查看详情'
+				},
 				tooltip : {
 					trigger: 'item'
 				},
@@ -232,6 +235,7 @@
 					update_china_data(data.china_data)
 					update_china_map(data.province_data)
 					update_china_trend(data.china_trend_data)
+					document.getElementById('nowDateTime').setAttribute()
 				}
 			})
 		}
