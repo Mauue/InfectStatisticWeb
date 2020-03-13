@@ -1,17 +1,20 @@
 .showMapButtonSet{
-	width: 678px;
+	width: 615px;
 	margin:50px auto 0px;
 }
 
 .showMapButton{
 	margin:0;
-	height:40px;
+	margin-left:-1px;
+	height:50px;
 	width:300px;
 	font-size:15px;
 	border-width:1px;
+	border-color:#BBBBBB;
+	background-color:white;
 }
 
-.selected{
+#nationalwideIp{
 	background-color:#DF452F;
 }
 
