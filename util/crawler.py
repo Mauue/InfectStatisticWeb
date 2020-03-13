@@ -84,7 +84,6 @@ def get_china_trend_data(data):
         'data': None
     }
     _dict = {}
-    print(data['list'])
     for i in data['list']:
         _dict.update({
             _storage_name_chinese[i['name']]: i['data']
@@ -114,19 +113,32 @@ def get_news_data(news_data, fake_news_data):
     }
 
 
-def get_province_trend_data(data):
+def get_province_trend_data(data, summary_data):
     province_trend_data = []
+    summary_data_dict = {}
+    for i in summary_data:
+        name = i.pop('name')
+        summary_data_dict.update({
+            name: i
+        })
+
     for _province_data in data:
         data_list = _province_data['trend']['list']
         for i in data_list:
             i['name'] = _storage_name_chinese[i['name']]
-
+        trend_data = {}
+        for i in data_list:
+            trend_data.update({
+                i['name']: i['data']
+            })
         province_data = {
             'name': _province_data['name'],
             'date': _province_data['trend']['updateDate'],
-            'data': data_list
+            'trend_data': trend_data,
+            'summary_data': summary_data_dict[_province_data['name']]
         }
         province_trend_data.append(province_data)
+
     return province_trend_data
 
 
@@ -135,9 +147,10 @@ def set_all_data_task():
     _data = _get_data()
     if _data and _data['component'] and _data['component'][0]:
         data = _data['component'][0]
+        province_summary_data = get_province_data(data['caseList'])
         index_page_data = {
             'china_data': get_china_data(data['summaryDataIn']),
-            'province_data': get_province_data(data['caseList']),
+            'province_data': province_summary_data,
             'china_trend_data': get_china_trend_data(data['trend'])
         }
         Redis.set(Config.INDEX_PAGE_DATA_KEY, json.dumps(index_page_data))
@@ -145,7 +158,7 @@ def set_all_data_task():
         news_data = get_news_data(data['hotwords'], data['gossips'])
         Redis.set(Config.NEWS_DATA_KEY, json.dumps(news_data))
 
-        province_trend_data = get_province_trend_data(data['provinceTrendList'])
+        province_trend_data = get_province_trend_data(data['provinceTrendList'], province_summary_data)
         for province in province_trend_data:
             Redis.set(province['name'], json.dumps(province))
 

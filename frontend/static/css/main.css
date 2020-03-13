@@ -131,3 +131,6 @@ html,body{
 	margin:3px auto;
 	text-align:center;
 }
+.selected{
+	background-color:#DF452F;
+}
