@@ -85,9 +85,12 @@ def get_china_trend_data(data):
     }
     _dict = {}
     for i in data['list']:
-        _dict.update({
-            _storage_name_chinese[i['name']]: i['data']
-        })
+        try:
+            _dict.update({
+                _storage_name_chinese[i['name']]: i['data']
+            })
+        except KeyError:
+            continue
     trend_data_dict['data'] = _dict
     return trend_data_dict
 
